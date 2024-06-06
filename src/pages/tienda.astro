@@ -1,0 +1,176 @@
+---
+import Layout from '../layout/Layout.astro';
+import Cartprod from '../components/Cartprod.astro';
+
+---
+<Layout>
+	<div class="container">
+       
+        <div class="d-flex justify-content-center flex-wrap my-3" id="botonesCategoria"></div>
+        <h4 class="text-center py-4 titulo" id="titulo">Tienda </h4>
+        <div class="row" id="muestraProductos"></div>
+        
+
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Detalle del Producto</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detalle">
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+</Layout>
+<script>
+    const APICat = 'https://dummyjson.com/products/category-list';
+    const API = 'https://dummyjson.com/products/category/';
+    const APIProd = 'https://dummyjson.com/products/';
+
+    const botonesCategoriaEl = document.querySelector('#botonesCategoria');
+    const muestraProductosEl = document.querySelector('#muestraProductos');
+    const detalleEl = document.querySelector('#detalle');
+    const tituloEl = document.querySelector('#titulo');
+
+
+  // cargador
+    addEventListener("DOMContentLoaded",()=>{
+        cargaCategorias();
+        cargaProductos("beauty");
+    })
+
+    const cargaCategorias = async()=>{
+        try{
+            
+            const resp = await fetch(APICat)
+            if(resp.status===200){
+                const datos = await resp.json();
+                console.log("datos de la ctegoria")
+                console.log(datos)
+               renderCategorias(datos);
+            }else{
+                console.log("error del api")
+            }
+
+        }catch(error){
+            console.log(error);
+        }
+    }
+    function renderCategorias(datos){
+        let valor="";
+        datos.map((item)=>(
+            valor+=
+                `
+                    <a class="btn btn-outline-info btn-sm m-2" href="#" id=${item}>${item} </a>
+                `
+            ))
+
+        botonesCategoriaEl.innerHTML=valor
+        
+    }
+    botonesCategoriaEl.addEventListener('click', (e)=>{
+        e.preventDefault();
+        console.log(e.target.id);
+        if (e.target && e.target.tagName === "A") {
+           cargaProductos(e.target.id);
+        }
+       
+        //alert(e.target.id)
+        //console.log(id)
+    })
+    const cargaProductos = async(categoria)=>{
+        try{
+            const URI=API+categoria
+            const resp = await fetch(URI)
+            if(resp.status===200){
+                const datos = await resp.json();
+                console.log(datos)
+               renderProductos(datos.products, categoria);
+            }else{
+                console.log("error del api")
+            }
+
+        }catch(error){
+            console.log(error);
+        }
+    }
+    
+    function renderProductos(datos,categorias){
+        tituloEl.innerHTML=`Categoria (${datos.length})  (${categorias})`
+        let valor="";
+            datos.map((item)=>(
+            valor+=
+                `
+               <div class="col-md-4 col-lg-3 col-lg-2 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header p-0">
+                            <img src=${item.thumbnail} class="card-img-top img-thumbnail" alt="..." loading="lazy">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title small">${item.title}</h5>
+                            <h5 class="card-title small text-danger">Precio: ${item.price}$</h5>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a  href="#" class="btn btn-outline-success btn-sm d-grid" data-bs-toggle="modal" data-bs-target="#exampleModal" id=${item.id}>Detalle</a>
+                        </div>
+                    </div>
+                </div>
+             `      
+        ))
+        muestraProductosEl.innerHTML=valor
+    }
+    muestraProductosEl.addEventListener('click', (e)=>{
+       cargarDetalle(e.target.id)
+    })
+
+    const cargarDetalle = async(id)=>{
+        try{
+            const URI=APIProd+id
+            const resp = await fetch(URI)
+            if(resp.status===200){
+                const datos = await resp.json();
+                //console.log(datos)
+                renderDetalle(datos);
+            }else{
+                console.log("error del api")
+            }
+
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    function renderDetalle(item){
+        console.log("entrando en render detalle")
+            let valor=
+                `
+                <div class="row py-2">
+                    <div class="col-md-5">
+                        <img src=${item.thumbnail} class="card-img-top img-thumbnail" alt="..." loading="lazy">
+                    </div>
+                    <div class="col-md-7">
+                        <h3>${item.category}</h3>
+                        <h3>Marca: <span class="fw-bold">${item.brand}</span></h3>
+                        <h4>Stock: <span class="badge bg-info">${item.stock}</span></h4>
+                        <h4>Garantia: <span class="fw-bold">${item.warrantyInformation}</span></h4>
+                        <h4>SKU: <span class="fw-bold">${item.sku}</span></h4>
+                        <p>${item.description}</p>
+                        <h3 class="text-danger">Precio: <span class="fw-bold">${item.price}$</span></h3>
+                    </div>
+                </div>
+             `      
+        detalleEl.innerHTML=valor
+
+    }
+</script>
+

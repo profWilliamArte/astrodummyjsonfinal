@@ -1,0 +1,40 @@
+---
+const {item} = Astro.props;
+---
+<div class="modal fade" id={`detalle${item.id}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-theme="dark">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-1" id="exampleModalLabel">{item.title}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-2">
+                <div class="col-md-5">
+                    <img src={item.thumbnail} class="card-img-top img-thumbnail" alt="..." loading="lazy">
+
+                </div>
+                <div class="col-md-7">
+                    <h3>{item.category}</h3>
+                    <h3>Marca: <span class="fw-bold">{item.brand}</span></h3>
+                    <h4>Stock: <span class="badge bg-info">{item.stock}</span></h4>
+                    <h4>Garantia: <span class="fw-bold">{item.warrantyInformation}</span></h4>
+                    <h4>SKU: <span class="fw-bold">{item.sku}</span></h4>
+                    <ul>Opiniones
+                    {item.reviews.map((rev) => (
+                        <li>{rev.comment}</li>
+                    ))}
+                   </ul>
+                    <p>{item.description}</p>
+                    <h3 class="text-danger">Precio: <span class="fw-bold">{item.price}$</span></h3>
+                </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+        </div>
+      </div>
+    </div>
+  </div>

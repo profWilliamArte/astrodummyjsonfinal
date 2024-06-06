@@ -1,0 +1,28 @@
+---
+import Cartprod from '../../components/Cartprod.astro';
+import Layout from '../../layout/Layout.astro';
+
+export async function getStaticPaths() {
+  const data = await fetch('https://dummyjson.com/products/category-list').then(response => response.json());
+  return data.map((cat) => {
+    return {
+      params: { id: cat },
+    };
+  });
+}
+
+const { id } = Astro.params;
+const response = await fetch('https://dummyjson.com/products/category/'+id);
+const data = await response.json();
+---
+<Layout>
+	<div class="container">
+    <h4 class="text-center py-4 titulo">Categorias Dinamico ({id}) ({ data.products.length}) </h4>
+    <div class="row">
+    { 
+        data.products.map((item)=>(
+            <Cartprod item={item} />
+        ))
+    }
+</div>
+</Layout>

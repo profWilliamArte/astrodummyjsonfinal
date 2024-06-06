@@ -1,0 +1,48 @@
+---
+import Cartprod from '../../components/Cartprod.astro';
+import Layout from '../../layout/Layout.astro';
+
+
+export async function getStaticPaths() {
+  return [
+    { params: { id: 'beauty' } },
+    { params: { id: 'fragrances' } },
+    { params: { id: 'furniture' } },
+    { params: { id: 'groceries' } },
+    { params: { id: 'home-decoration' } },
+    { params: { id: 'kitchen-accessories' } },
+    { params: { id: 'laptops' } },
+    { params: { id: 'mens-shirts' } },
+    { params: { id: 'mens-shoes' } },
+    { params: { id: 'mens-watches' } },
+    { params: { id: 'mobile-accessories' } },
+    { params: { id: 'motorcycle' } },
+    { params: { id: 'skin-care' } },
+    { params: { id: 'smartphones' } },
+    { params: { id: 'sports-accessories' } },
+    { params: { id: 'sunglasses' } },
+    { params: { id: 'tablets' } },
+    { params: { id: 'tops' } },
+    { params: { id: 'vehicle' } },
+    { params: { id: 'womens-bags' } },
+    { params: { id: 'womens-dresses' } },
+    { params: { id: 'womens-jewellery' } },
+    { params: { id: 'womens-shoes' } },
+    { params: { id: 'womens-watches' } }
+  ];
+}
+const { id } = Astro.params;
+const response = await fetch('https://dummyjson.com/products/category/'+id);
+const data = await response.json();
+---
+<Layout>
+	<div class="container">
+    <h4 class="text-center py-4 titulo">Categorias Estatico ({id}) ({ data.products.length}) </h4>
+    <div class="row">
+    { 
+      data.products.map((item)=>(
+        <Cartprod item={item} />
+      ))
+    }
+</div>
+</Layout>

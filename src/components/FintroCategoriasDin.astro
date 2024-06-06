@@ -1,0 +1,15 @@
+---
+
+const response = await fetch('https://dummyjson.com/products/category-list');
+const data = await response.json();
+
+---
+
+
+        { 
+            data.map((item)=>(
+                <li><a class="dropdown-item" href={`/catdin/${item}`} >{item} </a></li>
+            ))
+        }
+  
+

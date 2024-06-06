@@ -1,0 +1,60 @@
+1) npm create astro@latest . 
+   npm run dev
+2) cambiar 
+    <html lang="es"> en index.html dentro de src/page
+3) en un nuevo terminal
+    npm install bootstrap@latest
+4) crear las carpetas components y layout dentro de src
+5) crear Layout.astro dentro de la carpeta layout y traer todo el index
+   en el Layout configurar bootstrap
+        import 'bootstrap/dist/css/bootstrap.css'; /* al inicio --- --- */
+        <script src="bootstrap/dist/js/bootstrap.bundle.js"></script> /* al final body*/
+    crear la zona <slot/> dentro del body
+6) en index.astro eliminar todo y solo dejar:
+    ---
+        import Layout from '../layout/Layout.astro';
+    ---
+    <Layout>
+        <h3 class="text-center py-4">Index</h3>
+    </Layout>
+7) crear los componentes Header.astro y Footer.astro  
+   traer una barra de navegacion  https://getbootstrap.com/docs/5.3/components/navbar/
+   y un footer de                 https://getbootstrap.com/docs/5.3/examples/footers/
+8) importar y agregar el Header.astro y Fotter.astro en Layout.astro 
+        ---
+        import 'bootstrap/dist/css/bootstrap.css';
+        import Header from '../components/Header.astro';
+        import Footer from '../components/Footer.astro';
+        ---
+        <html lang="es">
+            <head>
+                <meta charset="utf-8" />
+                <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+                <meta name="viewport" content="width=device-width" />
+                <meta name="generator" content={Astro.generator} />
+                <title>Astrp Proyecto Final</title>
+            </head>
+            <body class="bg-dark text-white-50">
+                <Header/>
+                    <slot/>
+                <Footer/>
+                <script src="bootstrap/dist/js/bootstrap.bundle.js"></script>
+            </body>
+        </html>
+9) crear las paginas del proyecto movil, laptop, tienda, categorias, productos, contactos y a todas hacer lo del index
+10) adaptar el Header.astro al proyecto 
+        <a class="navbar-brand" href="#"><img src="logo.jpg" alt="" width="100"></a>   /agregar el logo
+        <nav class="navbar navbar-expand-lg bg-body-tertiary"> 
+        cambiar a 
+        <nav class="navbar navbar-expand-lg bg-black" data-bs-theme="dark"> 
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0"> mx-auto // para centrar el menu
+        crear la navegacion mirar Header.astro
+
+COMPONENTES ESTATICOS
+1) Crear los componentes  Carrusel.astro y un HeroInicio.astro
+
+
+
+
+
+
